@@ -24,7 +24,7 @@ def test_submit_user_details():
 
     select_hobby()
 
-    upload_picture('resources/22460.jpg')
+    upload_picture(gosha.picture_file)
 
     set_address(gosha.current_address)
 
