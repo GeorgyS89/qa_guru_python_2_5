@@ -1,5 +1,5 @@
 import allure
-
+from allure_commons.types import Severity
 from model.pages.registration_form import *
 from utils.app import given_opened_browser
 from utils.app import remove_ads
@@ -7,11 +7,16 @@ from utils.assertions import check_submitted_form
 from utils.path import upload_picture
 
 
+@allure.tag("demoqa_registration_form")
+@allure.severity(Severity.MINOR)
+@allure.label("owner", "Gosha")
+@allure.story("User is able to fill and submit registration form")
+@allure.link("https://demoqa.com/automation-practice-form", name="DemoQA")
 @allure.title("Registration form test")
 def test_submit_user_details():
     # GIVEN
     with allure.step("Open registration form"):
-        given_opened_browser('https://demoqa.com/automation-practice-form')
+        given_opened_browser('/automation-practice-form')
         remove_ads()
     # WHEN
     with allure.step("Fill and submit form"):

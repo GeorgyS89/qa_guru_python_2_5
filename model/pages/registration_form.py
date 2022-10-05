@@ -60,14 +60,10 @@ def set_state(value):
     dropdown.select(browser.element('#state'), value)
 
 
-
 def set_city(value):
     dropdown.select(browser.element('#city'), value)
-
 
 
 def press_submit():
     browser.element('#submit').perform(command.js.scroll_into_view)
     browser.element('#submit').press_enter()
-
-
