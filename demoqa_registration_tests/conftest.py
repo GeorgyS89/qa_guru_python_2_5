@@ -6,7 +6,6 @@ from selenium.webdriver.chrome.options import Options
 from selene import Browser, Config
 from dotenv import load_dotenv
 
-import utils
 
 DEFAULT_BROWSER_VERSION = "100.0"
 
@@ -49,8 +48,4 @@ def setup_browser(request):
 
     yield browser
 
-    utils.attach.add_html(browser)
-    utils.attach.add_screenshot(browser)
-    utils.attach.add_logs(browser)
-    utils.attach.add_video(browser)
     browser.quit()

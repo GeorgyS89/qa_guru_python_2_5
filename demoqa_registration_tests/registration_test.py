@@ -1,5 +1,6 @@
 import allure
 
+from utils.attach import *
 from model.pages.registration_form import *
 from utils.app import given_opened_browser
 from utils.app import remove_ads
@@ -55,3 +56,8 @@ def test_submit_user_details():
                 ('State and City', 'NCR Gurgaon')
             ]
         )
+
+    add_html(browser)
+    add_screenshot(browser)
+    add_logs(browser)
+    add_video(browser)
