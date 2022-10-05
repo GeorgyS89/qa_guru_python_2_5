@@ -4,7 +4,6 @@ from model.pages.registration_form import *
 from utils.app import given_opened_browser
 from utils.app import remove_ads
 from utils.assertions import check_submitted_form
-from utils.attach import add_html, add_screenshot, add_logs, add_video
 from utils.path import upload_picture
 
 
@@ -56,8 +55,3 @@ def test_submit_user_details():
                 ('State and City', 'NCR Gurgaon')
             ]
         )
-
-    add_html(browser)
-    add_screenshot(browser)
-    add_logs(browser)
-    add_video(browser)
