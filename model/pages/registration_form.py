@@ -2,7 +2,7 @@ from typing import Tuple
 
 from selene import have, command
 from selene.support.shared import browser
-from model.controls.dropdown import select
+
 from demoqa_registration_tests.user_data import gosha, Subject
 from model.controls import dropdown
 
