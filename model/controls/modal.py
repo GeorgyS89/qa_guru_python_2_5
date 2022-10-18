@@ -1,3 +1,3 @@
 from selene.support.shared import browser
 
-dialog = browser.element('/modal-content')
+dialog = browser.element('.modal-content')

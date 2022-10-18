@@ -1,53 +1,49 @@
 from model.pages.registration_form import *
-from utils.app import given_opened_browser
-from utils.app import remove_ads
-from utils.assertions import check_submitted_form
-from utils.path import upload
-from model.pages.registration_form import RegistrationForm
+from utils.app import registration_form
+from utils.convert import convert
 
 
 def test_submit_user_details():
     # GIVEN
-    given_opened_browser('/automation-practice-form')
-    remove_ads()
+    registration_form.open_browser_and_remove_ads()
     # WHEN
 
-    RegistrationForm.set_first_name(gosha.name)
-    set_last_name(gosha.last_name)
-    set_email(gosha.email)
-    select_gender(gosha.gender.value)
+    registration_form.set_first_name(gosha.name)
+    registration_form.set_last_name(gosha.last_name)
+    registration_form.set_email(gosha.email)
+    registration_form.select_gender(gosha.gender.value)
 
-    set_mobile(gosha.mobile)
+    registration_form.set_mobile(gosha.mobile)
 
-    select_date_of_birth()
+    registration_form.select_date_of_birth(gosha.birth_year,gosha.birth_month,gosha.birth_day)
 
-    select_subjects(gosha.subjects)
+    registration_form.click_subjects(gosha.subjects)
 
-    select_hobby()
+    registration_form.select_hobbies(gosha.hobbies)
 
-    upload(gosha.picture_file)
+    registration_form.upload_picture(gosha.picture_file)
 
-    set_address(gosha.current_address)
+    registration_form.set_address(gosha.current_address)
 
-    set_state(gosha.state)
+    registration_form.set_state(gosha.state)
 
-    set_city(gosha.city)
+    registration_form.set_city(gosha.city)
 
-    press_submit()
+    registration_form.press_submit()
 
     # THEN
 
-    check_submitted_form(
+    registration_form.check_submitted_form(
         [
-            ('Student Name', 'Gosha Smirnov'),
-            ('Student Email', 'gugugeguguge@gmail.com'),
-            ('Gender', 'Male'),
-            ('Mobile', '8889991011'),
-            ('Date of Birth', '10 May,1989'),
-            ('Subjects', 'History, Maths'),
-            ('Hobbies', 'Sports'),
-            ('Picture', '22460.jpg'),
-            ('Address', 'Somewhere here'),
-            ('State and City', 'NCR Gurgaon')
+            ('Student Name', f'{gosha.name} {gosha.last_name}'),
+            ('Student Email', gosha.email),
+            ('Gender', gosha.gender.value),
+            ('Mobile', gosha.mobile),
+            ('Date of Birth', f'{gosha.birth_day} {gosha.birth_month},{gosha.birth_year}'),
+            ('Subjects', convert(gosha.subjects)),
+            ('Hobbies', convert(gosha.hobbies)),
+            ('Picture', gosha.picture_file),
+            ('Address', gosha.current_address),
+            ('State and City', f'{gosha.state} {gosha.city}')
         ]
     )

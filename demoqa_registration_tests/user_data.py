@@ -10,9 +10,9 @@ class Subject(Enum):
 
 
 class Hobby(Enum):
-    Sports = '1'
-    Reading = '2'
-    Music = '3'
+    Sports = 'Sports'
+    Reading = 'Reading'
+    Music = 'Music'
 
 
 class Gender(Enum):

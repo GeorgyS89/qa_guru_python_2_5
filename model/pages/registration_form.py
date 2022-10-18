@@ -1,11 +1,14 @@
 from typing import Tuple
 
 from selene import have, command
+from selene.support import by
 from selene.support.shared import browser
 
 from demoqa_registration_tests.user_data import gosha, Subject, Hobby
+from model.controls.checkbox import Checkbox
 from model.controls.dropdown import DropDown
 from model.controls.datepicker import DatePicker
+from model.controls.modal import dialog
 from utils.path import upload
 
 
@@ -16,7 +19,7 @@ class RegistrationForm:
     def open_browser_and_remove_ads(self):
         browser.open('/automation-practice-form')
         ads = browser.all('[id^=google_ads][id*=container]')
-        if ads.with_(timeout=6).wait.until(have.size_greater_than_or_equal(3)):
+        if ads.with_(timeout=5).wait.until(have.size_greater_than_or_equal(3)):
             ads.perform(command.js.remove)
         return self
 
@@ -33,8 +36,7 @@ class RegistrationForm:
         return self
 
     def select_gender(self, gender):
-        browser.all('[for^=gender-radio]').by(
-            have.exact_text(gender.value)
+        browser.all('[for^=gender-radio]').by(have.exact_text(gender)
         ).first.click()
         return self
 
@@ -57,11 +59,10 @@ class RegistrationForm:
             browser.element('[id^="react-select-2"]').click()
         return self
 
-    def select_hobby(self, values: Tuple[Hobby]):
+    def select_hobbies(self, values: Tuple[Hobby]):
         for hobby in values:
-            browser.all('[id^=hobbies]').by(have.value(hobby.value)).first.element(
-                '..'
-            ).click()
+            path = "//label[contains(.,'" + str(hobby.value) + "')]"
+            browser.element(by.xpath(path)).click()
         return self
 
     def upload_picture(self, picture):
@@ -84,4 +85,10 @@ class RegistrationForm:
     def press_submit(self):
         browser.element('#submit').perform(command.js.scroll_into_view)
         browser.element('#submit').press_enter()
+        return self
+
+    def check_submitted_form(self, data):
+        rows = dialog.all('tbody tr')
+        for row, value in data:
+            rows.element_by(have.text(row)).all('td')[1].should(have.exact_text(value))
         return self
