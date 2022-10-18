@@ -1,7 +1,9 @@
 from model.pages.registration_form import *
-from utils.app import registration_form
+from utils.app import registration_form, register_new_user
 from utils.convert import convert
 
+def test_stepobject():
+    register_new_user.fill_and_submit()
 
 def test_submit_user_details():
     # GIVEN
@@ -29,7 +31,7 @@ def test_submit_user_details():
 
     registration_form.set_city(gosha.city)
 
-    registration_form.press_submit()
+    registration_form.submit_form()
 
     # THEN
 

@@ -4,11 +4,11 @@ from selene import have, command
 from selene.support import by
 from selene.support.shared import browser
 
-from demoqa_registration_tests.user_data import gosha, Subject, Hobby
-from model.controls.checkbox import Checkbox
-from model.controls.dropdown import DropDown
+from demoqa_registration_tests.user_data import Subject, Hobby, gosha
 from model.controls.datepicker import DatePicker
+from model.controls.dropdown import DropDown
 from model.controls.modal import dialog
+from utils.convert import convert
 from utils.path import upload
 
 
@@ -82,7 +82,7 @@ class RegistrationForm:
         DropDown.select(self, browser.element('#city'), value)
         return self
 
-    def press_submit(self):
+    def submit_form(self):
         browser.element('#submit').perform(command.js.scroll_into_view)
         browser.element('#submit').press_enter()
         return self
@@ -92,3 +92,42 @@ class RegistrationForm:
         for row, value in data:
             rows.element_by(have.text(row)).all('td')[1].should(have.exact_text(value))
         return self
+
+
+class RegisterNewUser:
+    def __init__(self):
+        self.registration_form = RegistrationForm()
+
+    def fill_and_submit(self):
+        (
+            self.registration_form.open_browser_and_remove_ads()
+
+            .set_first_name(gosha.name)
+            .set_last_name(gosha.last_name)
+            .set_email(gosha.email)
+            .select_gender(gosha.gender.value)
+            .set_mobile(gosha.mobile)
+            .select_date_of_birth(gosha.birth_year,gosha.birth_month,gosha.birth_day)
+            .type_subjects(gosha.subjects)
+            .select_hobbies(gosha.hobbies)
+            .upload_picture(gosha.picture_file)
+            .set_address(gosha.current_address)
+            .set_state(gosha.state)
+            .set_city(gosha.city)
+            .submit_form()
+
+            .check_submitted_form(
+                [
+                    ('Student Name', f'{gosha.name} {gosha.last_name}'),
+                    ('Student Email', gosha.email),
+                    ('Gender', gosha.gender.value),
+                    ('Mobile', gosha.mobile),
+                    ('Date of Birth', f'{gosha.birth_day} {gosha.birth_month},{gosha.birth_year}'),
+                    ('Subjects', convert(gosha.subjects)),
+                    ('Hobbies', convert(gosha.hobbies)),
+                    ('Picture', gosha.picture_file),
+                    ('Address', gosha.current_address),
+                    ('State and City', f'{gosha.state} {gosha.city}')
+                ],
+            )
+        )
